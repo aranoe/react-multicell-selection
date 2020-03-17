@@ -27,13 +27,14 @@ const persons: PersonFormValues[] = [
 ];
 function App() {
   const multiCellSelection = useMultiCellSelection();
-
-  const personFormArray = usePersonFormArray(persons.concat(persons, persons));
+  const arr: PersonFormValues[] = [];
+  Array.from({ length: 20 }).forEach(_ => arr.push(...persons));
+  const personFormArray = usePersonFormArray(arr);
 
   const addRow = () => {
     personFormArray.addForm();
   };
-  console.log(personFormArray.formArray);
+
   return (
     <MultiCellSelectionContext.Provider value={multiCellSelection}>
       <div className="App">

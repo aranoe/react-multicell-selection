@@ -18,7 +18,7 @@ export const useMultiCellSelection = () => {
   let { current: cells } = useRef<CellProps[][]>([]);
   const [firstSelectedCell, setFirstSelectedCell] = useState<Cell>([-1, -1]);
   const [lastSelectedCell, setLastSelectedCell] = useState<Cell>([-1, -1]);
-  const [selection, setSelection] = useState<Cell[]>();
+  const [selection, setSelection] = useState<Cell[]>([]);
   const revertStack = useRef<CellProps[][][]>([]);
   const registerCell = ({
     displayValue,
@@ -39,7 +39,7 @@ export const useMultiCellSelection = () => {
   };
   useEffect(() => {
     calculateSelection();
-  }, [...lastSelectedCell]);
+  }, [...firstSelectedCell, ...lastSelectedCell]);
 
   const calculateSelection = () => {
     const [x1, y1] = getTopLeftCell();
@@ -52,6 +52,7 @@ export const useMultiCellSelection = () => {
         newSelection.push([i, k]);
       }
     }
+
     setSelection(newSelection);
   };
   const registerRow = (row: number) => {
@@ -59,7 +60,6 @@ export const useMultiCellSelection = () => {
   };
   const unregisterRow = (row: number) => {
     cells = cells.filter((_, i) => i !== row);
-    console.log(cells);
   };
   useEffect(() => {
     document.addEventListener("mousedown", handleDocumentMouseDown);
@@ -98,10 +98,11 @@ export const useMultiCellSelection = () => {
   };
 
   const isSelected = (row: number, column: number) => {
-    const [x1, y1] = getTopLeftCell();
-    const [x2, y2] = getBottomRightCell();
+    return selection.some(cell => cell[0] === row && cell[1] === column);
+    // const [x1, y1] = getTopLeftCell();
+    // const [x2, y2] = getBottomRightCell();
 
-    return row >= x1 && row <= x2 && column >= y1 && column <= y2;
+    // return row >= x1 && row <= x2 && column >= y1 && column <= y2;
   };
 
   const getTopLeftCell = useCallback(() => {

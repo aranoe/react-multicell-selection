@@ -26,7 +26,6 @@ export const GridRow = ({ row, formItem }: GridRowProps) => {
         row={row}
         column={0}
         onPaste={(value: string) => {
-          console.log(fluentformItem.key);
           fluentformItem.setValues({ firstName: value });
         }}
         onCut={() => fluentformItem.setValues({ firstName: "" })}
