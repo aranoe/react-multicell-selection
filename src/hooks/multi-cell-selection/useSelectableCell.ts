@@ -22,9 +22,10 @@ export const useSelectableCell = (selectableCell: SelectableCell) => {
     isSelected,
     setLastCell,
     registerCell,
-    isFirstSelectedCell
+    isFirstSelectedCell,
+    selection
   } = useContext(MultiCellSelectionContext);
-  const selected = isSelected(row, column);
+  const selected = useMemo(() => isSelected(row, column), [selection]);
   const firstSelected = isFirstSelectedCell(row, column);
   const [active, setActive] = useState(false);
   const pevValueRef = useRef(displayValue);
@@ -51,7 +52,7 @@ export const useSelectableCell = (selectableCell: SelectableCell) => {
   };
   useEffect(() => {
     registerCell(selectableCell);
-  });
+  }, []);
 
   const onMouseEnter = () => {
     if (selecting) setLastCell(row, column);

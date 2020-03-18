@@ -13,22 +13,12 @@ const persons: PersonFormValues[] = [
     firstName: "Jill",
     lastName: "Smith",
     age: "54"
-  },
-  {
-    firstName: "Mike",
-    lastName: "Aton",
-    age: "67"
-  },
-  {
-    firstName: "Jennifer",
-    lastName: "Fergosen",
-    age: "20"
   }
 ];
 function App() {
   const multiCellSelection = useMultiCellSelection();
   const arr: PersonFormValues[] = [];
-  Array.from({ length: 20 }).forEach(_ => arr.push(...persons));
+  Array.from({ length: 100 }).forEach(_ => arr.push(...persons));
   const personFormArray = usePersonFormArray(arr);
 
   const addRow = () => {

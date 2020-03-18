@@ -61,12 +61,12 @@ export const useMultiCellSelection = () => {
   const unregisterRow = (row: number) => {
     cells = cells.filter((_, i) => i !== row);
   };
-  useEffect(() => {
-    document.addEventListener("mousedown", handleDocumentMouseDown);
-    return () => {
-      document.addEventListener("mousedown", handleDocumentMouseDown);
-    };
-  }, []);
+  // useEffect(() => {
+  //   document.addEventListener("mousedown", handleDocumentMouseDown);
+  //   return () => {
+  //     document.addEventListener("mousedown", handleDocumentMouseDown);
+  //   };
+  // }, []);
 
   const handleDocumentMouseDown = (event: MouseEvent) => {
     const noCellClicked = cells.some(row =>
@@ -98,6 +98,7 @@ export const useMultiCellSelection = () => {
   };
 
   const isSelected = (row: number, column: number) => {
+    if (!selecting) return false;
     return selection.some(cell => cell[0] === row && cell[1] === column);
     // const [x1, y1] = getTopLeftCell();
     // const [x2, y2] = getBottomRightCell();
@@ -215,6 +216,9 @@ export const useMultiCellSelection = () => {
   });
 
   return {
+    firstSelectedCell,
+    lastSelectedCell,
+    selection,
     startSelecting,
     stopSelecting,
     selecting,
