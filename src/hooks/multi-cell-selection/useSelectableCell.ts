@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useMemo, useRef, useState } from "react";
 
 import { KeyCode } from "./enums/KeyCode";
-import { MultiCellSelectionContext } from "./MultiCellSelection";
+import { MultiCellSelectionContext } from "./MultiCellSelectionContext";
 
 export interface SelectableCell {
   row: number;

@@ -2,31 +2,76 @@ import "./App.css";
 
 import React from "react";
 
-import { GridRow } from "./components/grid/GridRow";
+import { GridRow } from "./components/grid-performant/GridRow";
 import { PersonFormValues, usePersonFormArray } from "./forms/personForm";
-import { MultiCellSelectionContext } from "./hooks/multi-cell-selection/MultiCellSelection";
-import { useMultiCellSelection } from "./hooks/multi-cell-selection/useMultiCellSelection";
+import { MultiCellSelectionProvider } from "./hooks/multi-cell-selection-performant/context/MultiCellSelectionProvider";
+import { CellData } from "./hooks/multi-cell-selection-performant/useMultiCellSelection";
 
+// import { MultiCellSelectionContext } from "./hooks/multi-cell-selection-performant/MultiCellSelectionContext";
 const heads = ["Firstname", "Last"];
 const persons: PersonFormValues[] = [
   {
     firstName: "Jill",
     lastName: "Smith",
     age: "54"
+  },
+  {
+    firstName: "Micheal",
+    lastName: "Moe",
+    age: "43"
+  },
+  {
+    firstName: "Thomas",
+    lastName: "Proud",
+    age: "26"
+  },
+  {
+    firstName: "Jeff",
+    lastName: "Miles",
+    age: "87"
+  },
+  {
+    firstName: "Samantha",
+    lastName: "Jones",
+    age: "19"
   }
 ];
+
 function App() {
-  const multiCellSelection = useMultiCellSelection();
   const arr: PersonFormValues[] = [];
-  Array.from({ length: 100 }).forEach(_ => arr.push(...persons));
+  Array.from({ length: 10 }).forEach(_ => arr.push(...persons));
   const personFormArray = usePersonFormArray(arr);
 
   const addRow = () => {
     personFormArray.addForm();
   };
 
+  const data: CellData[][] = personFormArray.formArray.map(arr => [
+    {
+      displayValue:
+        personFormArray.getFormStateByKey(arr.key)?.values.firstName ?? "",
+      onPaste: (value: string) =>
+        arr.stateManager.setValues(arr.key, { firstName: value }),
+      onCut: () => arr.stateManager.setValues(arr.key, { firstName: "" })
+    },
+    {
+      displayValue:
+        personFormArray.getFormStateByKey(arr.key)?.values.lastName ?? "",
+      onPaste: (value: string) =>
+        arr.stateManager.setValues(arr.key, { lastName: value }),
+      onCut: () => arr.stateManager.setValues(arr.key, { lastName: "" })
+    },
+    {
+      displayValue:
+        personFormArray.getFormStateByKey(arr.key)?.values.age ?? "",
+      onPaste: (value: string) =>
+        arr.stateManager.setValues(arr.key, { age: value }),
+      onCut: () => arr.stateManager.setValues(arr.key, { age: "" })
+    }
+  ]);
+
   return (
-    <MultiCellSelectionContext.Provider value={multiCellSelection}>
+    <MultiCellSelectionProvider cells={data}>
       <div className="App">
         <table className="person-table">
           <thead>
@@ -47,7 +92,7 @@ function App() {
           </tbody>
         </table>
       </div>
-    </MultiCellSelectionContext.Provider>
+    </MultiCellSelectionProvider>
   );
 }
 

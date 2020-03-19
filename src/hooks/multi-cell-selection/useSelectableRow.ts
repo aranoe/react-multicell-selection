@@ -1,6 +1,6 @@
 import { useContext, useEffect } from "react";
 
-import { MultiCellSelectionContext } from "./MultiCellSelection";
+import { MultiCellSelectionContext } from "./MultiCellSelectionContext";
 
 export const useSelectableRow = (row: number) => {
   const { registerRow, unregisterRow, selectRow } = useContext(
