@@ -3,7 +3,7 @@ import React, { useCallback, useContext, useEffect, useRef, useState } from "rea
 import { SelectionContext } from "./context/SelectionContext";
 import { SelectionStateContext } from "./context/SelectionStateContext";
 import { KeyCode } from "./enums/KeyCode";
-import { getTopLeftCell } from "./reducer/selection-helper";
+import { getTopLeftCell } from "./reducer/helper/selection-helper";
 import { useGetter } from "./useGetter";
 import { convert2DArrayToPastableString, convertStringTo2DArrayOfStrings, copyTextToClipboard } from "./utils/utils";
 

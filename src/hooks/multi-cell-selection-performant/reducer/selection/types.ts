@@ -1,14 +1,16 @@
 import { Reducer } from "react";
 
-import { SelectionActionTypes } from "./selection-reducer";
+import { SelectionActionTypes } from "./reducer";
 
 export type Cell = [number, number];
-
-export type PrimeCells = {
-  first: Cell;
-  last: Cell;
-};
-
+export interface PrimeCell {
+  cell: Cell;
+  elementRef: React.RefObject<HTMLElement | null>;
+}
+export interface PrimeCells {
+  first: PrimeCell;
+  last: PrimeCell;
+}
 export interface SelectionState {
   primeCells: PrimeCells;
   selection: Cell[];

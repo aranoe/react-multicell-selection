@@ -1,6 +1,5 @@
-import { PrimeCells } from "../useSelection";
-import { calculateSelection } from "./selection-helper";
-import { Cell, SelectionState } from "./selection-types";
+import { calculateSelection } from "../helper/selection-helper";
+import { PrimeCell, PrimeCells, SelectionState } from "./types";
 
 export type Action<K, V = void> = V extends void
   ? { type: K }
@@ -8,16 +7,16 @@ export type Action<K, V = void> = V extends void
 
 export type SelectionActionTypes =
   | Action<"SET_PRIME_CELLS", { primeCells: PrimeCells }>
-  | Action<"SET_FIRST_PRIME_CELL", { first: Cell }>
-  | Action<"SET_LAST_PRIME_CELL", { last: Cell }>
+  | Action<"SET_FIRST_PRIME_CELL", { first: PrimeCell }>
+  | Action<"SET_LAST_PRIME_CELL", { last: PrimeCell }>
   | Action<"RESET_PRIME_CELLS">
   // | Action<"SET_SELECTION", { selection: Cell[] }>
-  | Action<"START_SELECTING", { startingCell: Cell }>
+  | Action<"START_SELECTING", { startingCell: PrimeCell }>
   | Action<"STOP_SELECTING">;
 
 export const initialPrimeCells = {
-  first: [-1, -1],
-  last: [-1, -1]
+  first: { cell: [-1, -1], elementRef: undefined as any },
+  last: { cell: [-1, -1], elementRef: undefined as any }
 } as PrimeCells;
 
 export const useSelectionReducer = (
@@ -30,8 +29,8 @@ export const useSelectionReducer = (
         ...state,
         primeCells: action.payload.primeCells,
         selection: calculateSelection(
-          action.payload.primeCells.first,
-          action.payload.primeCells.last
+          action.payload.primeCells.first.cell,
+          action.payload.primeCells.last.cell
         )
       };
     case "RESET_PRIME_CELLS":
@@ -41,8 +40,8 @@ export const useSelectionReducer = (
         ...state,
         primeCells: { ...state.primeCells, first: action.payload.first },
         selection: calculateSelection(
-          action.payload.first,
-          state.primeCells.last
+          action.payload.first.cell,
+          state.primeCells.last.cell
         )
       };
     case "SET_LAST_PRIME_CELL":
@@ -50,8 +49,8 @@ export const useSelectionReducer = (
         ...state,
         primeCells: { ...state.primeCells, last: action.payload.last },
         selection: calculateSelection(
-          state.primeCells.first,
-          action.payload.last
+          state.primeCells.first.cell,
+          action.payload.last.cell
         )
       };
     // case "SET_SELECTION":
@@ -64,10 +63,7 @@ export const useSelectionReducer = (
           first: action.payload.startingCell,
           last: action.payload.startingCell
         },
-        selection: calculateSelection(
-          action.payload.startingCell,
-          action.payload.startingCell
-        )
+        selection: [action.payload.startingCell.cell]
       };
     case "STOP_SELECTING":
       return { ...state, selecting: false };

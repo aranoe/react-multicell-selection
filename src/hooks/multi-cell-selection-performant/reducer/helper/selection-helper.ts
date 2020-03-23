@@ -1,4 +1,4 @@
-import { Cell } from "./selection-types";
+import { Cell } from "../selection/types";
 
 export const getTopLeftCell = (first: Cell, last: Cell) => {
   const [x1, y1] = first;

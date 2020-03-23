@@ -2,28 +2,52 @@ import React, { useContext } from "react";
 
 import { CellData, useMultiCellSelection } from "../useMultiCellSelection";
 import { useSelection } from "../useSelection";
+import { useSelectionRects } from "../useSelectionRects";
+import { useSelectionRectsState } from "../useSelectionRectsState";
+import { useSelectionState } from "../useSelectionState";
 import { MultiCellSelectionContext } from "./MultiCellSelectionContext";
 import { SelectionContext } from "./SelectionContext";
+import { SelectionRectsContext } from "./SelectionRectsContext";
+import { SelectionRectsStateContext } from "./SelectionRectsStateContext";
 import { SelectionStateContext } from "./SelectionStateContext";
-import { useSelectionState } from "../useSelectionState";
 
 export interface MultiCellSelectionProviderProps {
   cells: CellData[][];
 }
-export const SelectionContextProvider: React.FC<MultiCellSelectionProviderProps> = ({
+
+export const MultiCellSelectionProvider: React.FC<MultiCellSelectionProviderProps> = ({
+  children,
+  cells
+}) => {
+  const selectionState = useSelectionState();
+  const selectionRectsState = useSelectionRectsState();
+  return (
+    <SelectionStateContext.Provider value={selectionState}>
+      <SelectionRectsStateContext.Provider value={selectionRectsState}>
+        <SelectionContextProvider cells={cells}>
+          {children}
+        </SelectionContextProvider>
+      </SelectionRectsStateContext.Provider>
+    </SelectionStateContext.Provider>
+  );
+};
+
+const SelectionContextProvider: React.FC<MultiCellSelectionProviderProps> = ({
   children,
   cells
 }) => {
   const selection = useSelection();
-
+  const selectionRects = useSelectionRects();
   return (
     <SelectionContext.Provider value={selection}>
-      <Test cells={cells}>{children}</Test>
+      <SelectionRectsContext.Provider value={selectionRects}>
+        <Test cells={cells}>{children}</Test>
+      </SelectionRectsContext.Provider>
     </SelectionContext.Provider>
   );
 };
 
-export const Test: React.FC<MultiCellSelectionProviderProps> = ({
+const Test: React.FC<MultiCellSelectionProviderProps> = ({
   children,
   cells
 }) => {
@@ -32,20 +56,5 @@ export const Test: React.FC<MultiCellSelectionProviderProps> = ({
     <MultiCellSelectionContext.Provider value={multiCellSelection}>
       {children}
     </MultiCellSelectionContext.Provider>
-  );
-};
-
-export const MultiCellSelectionProvider: React.FC<MultiCellSelectionProviderProps> = ({
-  children,
-  cells
-}) => {
-  const selectionState = useSelectionState();
-
-  return (
-    <SelectionStateContext.Provider value={selectionState}>
-      <SelectionContextProvider cells={cells}>
-        {children}
-      </SelectionContextProvider>
-    </SelectionStateContext.Provider>
   );
 };

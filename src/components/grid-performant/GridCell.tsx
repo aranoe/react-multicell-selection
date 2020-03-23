@@ -25,21 +25,21 @@ const areEqual = (
 };
 
 export const GridCell = React.memo(({ field, row, column }: GridItemProps) => {
-  const elementRef = useRef(null);
+  // const elementRef = useRef<HTMLTableDataCellElement>(null);
 
-  const { elementProps, active, selected } = useSelectableCell({
+  const { elementProps, active } = useSelectableCell<HTMLTableDataCellElement>({
     value: field.value?.toString() ?? "",
     row,
     column
   });
 
-  console.log("item", active);
+  // console.log("item", elementRef.current?.getBoundingClientRect());
   return (
     <td
       {...elementProps}
-      ref={elementRef}
+      // ref={elementRef}
       className={classNames("item", {
-        selected
+        // selected
         //   "first-selected": firstSelected
       })}
     >

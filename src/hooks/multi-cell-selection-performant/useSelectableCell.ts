@@ -1,6 +1,7 @@
 import React, { RefObject, useContext, useEffect, useMemo, useRef, useState } from "react";
 
 import { SelectionContext } from "./context/SelectionContext";
+import { SelectionRectsContext } from "./context/SelectionRectsContext";
 import { KeyCode } from "./enums/KeyCode";
 
 export interface UseSelectableCellParams {
@@ -21,26 +22,18 @@ export interface ReturnTypeUseSelectableCell {
     onKeyDown: (event: any) => void;
   };
 }
-export const useSelectableCell = (selectableCell: UseSelectableCellParams) => {
+export const useSelectableCell = <T extends HTMLElement>(
+  selectableCell: UseSelectableCellParams
+) => {
   const { row, column } = selectableCell;
-  const { startSelecting, setLastCell, isSelected } = useContext(
-    SelectionContext
+  const { startSelecting, setLastCell } = useContext(SelectionContext);
+
+  const { setFirstRect, setLastRect, setSelecitonRect } = useContext(
+    SelectionRectsContext
   );
-  // const { state } = useContext(SelectionStateContext);
-  const elementRef = useRef<HTMLElement>(null);
+  const elementRef = useRef<T>(null);
   const [active, setActive] = useState(false);
-  const [selected, setSelected] = useState(false);
-  // const checkSelected = () => {
-  //   const newSelected = isSelected();
-  //   if (newSelected !== selected) setSelected(newSelected);
-  // };
-  // const isSelected = () => {
-  //   return state.selection.some(cell => cell[0] === row && cell[1] === column);
-  // };
-  // useEffect(() => {
-  //   checkSelected();
-  // }, [state.selection]);
-  // const pevValueRef = useRef(displayValue);
+
   useEffect(() => {
     if (active) document.addEventListener("mousedown", handleDocumentMouseDown);
     return () => {
@@ -64,18 +57,18 @@ export const useSelectableCell = (selectableCell: UseSelectableCellParams) => {
   };
 
   const onMouseEnter = () => {
-    setLastCell(row, column);
+    setLastCell(row, column, elementRef);
   };
 
   const onMouseDown = () => {
-    performance.now();
-    startSelecting(row, column);
+    startSelecting(row, column, elementRef);
+    if (elementRef.current)
+      setFirstRect(elementRef.current.getBoundingClientRect());
   };
 
   // console.log("re-render selectableCell");
   return {
     //   firstSelected,
-    selected: isSelected(row, column),
     active,
     elementProps: {
       ref: elementRef,

@@ -4,6 +4,7 @@ import React from "react";
 
 import { GridRow } from "./components/grid-performant/GridRow";
 import { PersonFormValues, usePersonFormArray } from "./forms/personForm";
+import { SelectionBox } from "./hooks/multi-cell-selection-performant/components/SelectionBox/SelectionBox";
 import { MultiCellSelectionProvider } from "./hooks/multi-cell-selection-performant/context/MultiCellSelectionProvider";
 import { CellData } from "./hooks/multi-cell-selection-performant/useMultiCellSelection";
 
@@ -93,6 +94,7 @@ function App() {
             ))}
           </tbody>
         </table>
+        <SelectionBox />
       </div>
     </MultiCellSelectionProvider>
   );

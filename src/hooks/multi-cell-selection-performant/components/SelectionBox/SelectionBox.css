@@ -1,0 +1,14 @@
+.floating-rect {
+  position: absolute;
+  pointer-events: none;
+  box-sizing: border-box;
+}
+
+.floating-rect.hidden {
+  display: none;
+}
+
+.selection {
+  background: rgba(160, 195, 255, 0.2);
+  border: 2px #4285f4 solid;
+}
