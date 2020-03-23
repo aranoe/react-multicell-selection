@@ -174,8 +174,6 @@ export const useMultiCellSelection = () => {
   };
 
   const handleRevert = () => {
-    console.log("ctrl+z");
-    console.log(revertStack.current[revertStack.current.length - 1]);
     cells = revertStack.current[revertStack.current.length - 1];
   };
 

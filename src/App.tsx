@@ -39,31 +39,28 @@ const persons: PersonFormValues[] = [
 
 function App() {
   const arr: PersonFormValues[] = [];
-  Array.from({ length: 10 }).forEach(_ => arr.push(...persons));
-  const personFormArray = usePersonFormArray(arr);
+  Array.from({ length: 100 }).forEach(_ => arr.push(...persons));
+  const { addForm, formArray, getFormStateByKey } = usePersonFormArray(arr);
 
   const addRow = () => {
-    personFormArray.addForm();
+    addForm();
   };
 
-  const data: CellData[][] = personFormArray.formArray.map(arr => [
+  const data: CellData[][] = formArray.map(arr => [
     {
-      displayValue:
-        personFormArray.getFormStateByKey(arr.key)?.values.firstName ?? "",
+      displayValue: getFormStateByKey(arr.key)?.values.firstName ?? "",
       onPaste: (value: string) =>
         arr.stateManager.setValues(arr.key, { firstName: value }),
       onCut: () => arr.stateManager.setValues(arr.key, { firstName: "" })
     },
     {
-      displayValue:
-        personFormArray.getFormStateByKey(arr.key)?.values.lastName ?? "",
+      displayValue: getFormStateByKey(arr.key)?.values.lastName ?? "",
       onPaste: (value: string) =>
         arr.stateManager.setValues(arr.key, { lastName: value }),
       onCut: () => arr.stateManager.setValues(arr.key, { lastName: "" })
     },
     {
-      displayValue:
-        personFormArray.getFormStateByKey(arr.key)?.values.age ?? "",
+      displayValue: getFormStateByKey(arr.key)?.values.age ?? "",
       onPaste: (value: string) =>
         arr.stateManager.setValues(arr.key, { age: value }),
       onCut: () => arr.stateManager.setValues(arr.key, { age: "" })
@@ -86,8 +83,13 @@ function App() {
             </tr>
           </thead>
           <tbody>
-            {personFormArray.formArray.map((item, i) => (
-              <GridRow row={i} key={item.key} formItem={item} />
+            {formArray.map((item, i) => (
+              <GridRow
+                row={i}
+                key={item.key}
+                formItem={item}
+                formState={getFormStateByKey(item.key)}
+              />
             ))}
           </tbody>
         </table>

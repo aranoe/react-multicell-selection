@@ -11,6 +11,7 @@ export type PrimeCells = {
   first: Cell;
   last: Cell;
 };
+
 export const useSelection = () => {
   const { state, dispatch } = useContext(SelectionStateContext);
 
@@ -65,14 +66,11 @@ export const useSelection = () => {
   // }, [...getState().primeCells.first, ...getState().primeCells.last]);
 
   const setLastCell = (row: number, column: number) => {
-    if (getState().selecting) {
+    if (getState().selecting)
       dispatch({
         type: "SET_LAST_PRIME_CELL",
         payload: { last: [row, column] }
       });
-      return true;
-    }
-    return false;
   };
 
   const resetSelection = () => {

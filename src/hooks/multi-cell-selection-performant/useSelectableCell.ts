@@ -1,22 +1,45 @@
-import React, { RefObject, useContext, useEffect, useMemo, useState } from "react";
+import React, { RefObject, useContext, useEffect, useMemo, useRef, useState } from "react";
 
 import { SelectionContext } from "./context/SelectionContext";
 import { KeyCode } from "./enums/KeyCode";
 
 export interface UseSelectableCellParams {
+  value: string;
   row: number;
   column: number;
-  elementRef: React.MutableRefObject<HTMLElement | null>;
+  // elementRef: React.MutableRefObject<HTMLElement | null>;
 }
-
+export type UseSelectableCell = ReturnType<typeof useSelectableCell>;
+export interface ReturnTypeUseSelectableCell {
+  selected: boolean;
+  active: boolean;
+  elementProps: {
+    ref: React.RefObject<HTMLElement>;
+    onDoubleClick: () => void;
+    onMouseEnter: () => void;
+    onMouseDown: () => void;
+    onKeyDown: (event: any) => void;
+  };
+}
 export const useSelectableCell = (selectableCell: UseSelectableCellParams) => {
-  const { row, column, elementRef } = selectableCell;
+  const { row, column } = selectableCell;
   const { startSelecting, setLastCell, isSelected } = useContext(
     SelectionContext
   );
-
+  // const { state } = useContext(SelectionStateContext);
+  const elementRef = useRef<HTMLElement>(null);
   const [active, setActive] = useState(false);
   const [selected, setSelected] = useState(false);
+  // const checkSelected = () => {
+  //   const newSelected = isSelected();
+  //   if (newSelected !== selected) setSelected(newSelected);
+  // };
+  // const isSelected = () => {
+  //   return state.selection.some(cell => cell[0] === row && cell[1] === column);
+  // };
+  // useEffect(() => {
+  //   checkSelected();
+  // }, [state.selection]);
   // const pevValueRef = useRef(displayValue);
   useEffect(() => {
     if (active) document.addEventListener("mousedown", handleDocumentMouseDown);
@@ -45,24 +68,21 @@ export const useSelectableCell = (selectableCell: UseSelectableCellParams) => {
   };
 
   const onMouseDown = () => {
+    performance.now();
     startSelecting(row, column);
   };
 
-  console.log("re-render selectableCell");
-  return useMemo(
-    () => ({
-      //   firstSelected,
-      selected,
-      active,
-      elementProps: {
-        ref: elementRef,
-        onDoubleClick,
-        onMouseEnter,
-        onMouseDown,
-
-        onKeyDown
-      }
-    }),
-    [active, selected]
-  );
+  // console.log("re-render selectableCell");
+  return {
+    //   firstSelected,
+    selected: isSelected(row, column),
+    active,
+    elementProps: {
+      ref: elementRef,
+      onDoubleClick,
+      onMouseEnter,
+      onMouseDown,
+      onKeyDown
+    }
+  };
 };

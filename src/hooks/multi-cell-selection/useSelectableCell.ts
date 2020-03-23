@@ -11,7 +11,7 @@ export interface SelectableCell {
   onCut: () => void;
   elementRef: React.MutableRefObject<HTMLElement | null>;
 }
-export type UseSelectableCell = typeof useSelectableCell;
+export type UseSelectableCell = ReturnType<typeof useSelectableCell>;
 
 export const useSelectableCell = (selectableCell: SelectableCell) => {
   const { row, column, displayValue, elementRef, onPaste } = selectableCell;
