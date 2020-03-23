@@ -33,10 +33,10 @@ td.selected:last-of-type {
   background-color: red !important;
   border: 2px solid red;
 }
-.first-selected {
+/* .first-selected {
   box-shadow: inset 0 0 0 1px rgb(56, 122, 255);
   background: none;
-}
+} */
 .item {
   box-sizing: border-box;
   -webkit-touch-callout: none;

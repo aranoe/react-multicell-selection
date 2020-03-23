@@ -1,7 +1,6 @@
 import React, { RefObject, useContext, useEffect, useMemo, useRef, useState } from "react";
 
 import { SelectionContext } from "./context/SelectionContext";
-import { SelectionRectsContext } from "./context/SelectionRectsContext";
 import { KeyCode } from "./enums/KeyCode";
 
 export interface UseSelectableCellParams {
@@ -28,9 +27,6 @@ export const useSelectableCell = <T extends HTMLElement>(
   const { row, column } = selectableCell;
   const { startSelecting, setLastCell } = useContext(SelectionContext);
 
-  const { setFirstRect, setLastRect, setSelecitonRect } = useContext(
-    SelectionRectsContext
-  );
   const elementRef = useRef<T>(null);
   const [active, setActive] = useState(false);
 
@@ -62,8 +58,6 @@ export const useSelectableCell = <T extends HTMLElement>(
 
   const onMouseDown = () => {
     startSelecting(row, column, elementRef);
-    if (elementRef.current)
-      setFirstRect(elementRef.current.getBoundingClientRect());
   };
 
   // console.log("re-render selectableCell");

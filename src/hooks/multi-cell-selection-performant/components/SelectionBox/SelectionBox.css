@@ -1,14 +1,11 @@
-.floating-rect {
-  position: absolute;
-  pointer-events: none;
-  box-sizing: border-box;
-}
-
-.floating-rect.hidden {
-  display: none;
-}
-
 .selection {
-  background: rgba(160, 195, 255, 0.2);
-  border: 2px #4285f4 solid;
+  background: rgba(56, 186, 82, 0.1);
+  border: 2px #38ba52 solid;
+}
+.first-selected {
+  z-index: 99999999;
+  background-color: none;
+  /* box-shadow: 0 2px 5px 1px rgba(0, 0, 0, 0.3); */
+  border: 2px solid #38ba52;
+  /* transform: translateY(-2px); */
 }

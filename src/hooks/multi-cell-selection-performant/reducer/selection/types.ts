@@ -5,7 +5,7 @@ import { SelectionActionTypes } from "./reducer";
 export type Cell = [number, number];
 export interface PrimeCell {
   cell: Cell;
-  elementRef: React.RefObject<HTMLElement | null>;
+  elementRef: React.RefObject<HTMLElement> | null;
 }
 export interface PrimeCells {
   first: PrimeCell;

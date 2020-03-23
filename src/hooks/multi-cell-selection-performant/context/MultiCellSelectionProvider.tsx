@@ -2,13 +2,9 @@ import React, { useContext } from "react";
 
 import { CellData, useMultiCellSelection } from "../useMultiCellSelection";
 import { useSelection } from "../useSelection";
-import { useSelectionRects } from "../useSelectionRects";
-import { useSelectionRectsState } from "../useSelectionRectsState";
 import { useSelectionState } from "../useSelectionState";
 import { MultiCellSelectionContext } from "./MultiCellSelectionContext";
 import { SelectionContext } from "./SelectionContext";
-import { SelectionRectsContext } from "./SelectionRectsContext";
-import { SelectionRectsStateContext } from "./SelectionRectsStateContext";
 import { SelectionStateContext } from "./SelectionStateContext";
 
 export interface MultiCellSelectionProviderProps {
@@ -20,14 +16,12 @@ export const MultiCellSelectionProvider: React.FC<MultiCellSelectionProviderProp
   cells
 }) => {
   const selectionState = useSelectionState();
-  const selectionRectsState = useSelectionRectsState();
+
   return (
     <SelectionStateContext.Provider value={selectionState}>
-      <SelectionRectsStateContext.Provider value={selectionRectsState}>
-        <SelectionContextProvider cells={cells}>
-          {children}
-        </SelectionContextProvider>
-      </SelectionRectsStateContext.Provider>
+      <SelectionContextProvider cells={cells}>
+        {children}
+      </SelectionContextProvider>
     </SelectionStateContext.Provider>
   );
 };
@@ -37,12 +31,10 @@ const SelectionContextProvider: React.FC<MultiCellSelectionProviderProps> = ({
   cells
 }) => {
   const selection = useSelection();
-  const selectionRects = useSelectionRects();
+
   return (
     <SelectionContext.Provider value={selection}>
-      <SelectionRectsContext.Provider value={selectionRects}>
-        <Test cells={cells}>{children}</Test>
-      </SelectionRectsContext.Provider>
+      <Test cells={cells}>{children}</Test>
     </SelectionContext.Provider>
   );
 };

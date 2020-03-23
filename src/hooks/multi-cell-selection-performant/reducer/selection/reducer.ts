@@ -15,8 +15,8 @@ export type SelectionActionTypes =
   | Action<"STOP_SELECTING">;
 
 export const initialPrimeCells = {
-  first: { cell: [-1, -1], elementRef: undefined as any },
-  last: { cell: [-1, -1], elementRef: undefined as any }
+  first: { cell: [-1, -1], elementRef: null },
+  last: { cell: [-1, -1], elementRef: null }
 } as PrimeCells;
 
 export const useSelectionReducer = (

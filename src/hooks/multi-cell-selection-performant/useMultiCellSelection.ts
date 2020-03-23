@@ -63,8 +63,8 @@ export const useMultiCellSelection = ({
     navigator.clipboard.readText().then(text => {
       if (!somethingIsSelected()) return;
       const [x, y] = getTopLeftCell(
-        getState().primeCells.first,
-        getState().primeCells.last
+        getState().primeCells.first.cell,
+        getState().primeCells.last.cell
       );
       const arr = convertStringTo2DArrayOfStrings(text);
       arr.forEach((row, i) =>

@@ -1,0 +1,10 @@
+.floating-rect {
+  position: absolute;
+  pointer-events: none;
+  box-sizing: border-box;
+  transition: all 0.1s;
+}
+
+.floating-rect.hidden {
+  display: none;
+}
